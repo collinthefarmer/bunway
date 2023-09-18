@@ -1,0 +1,3 @@
+<% const y = Math.floor(it.i / it.game.grid.w) %>
+<% const x = it.i % it.game.grid.w %>
+<td ws-send hx-trigger="click" id="<%= `x${x}y${y}` %>"><%~ it.alive ? "<div></div>" : "" %></td>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/public/scripts/htmx/htmx.js"></script>
+    <script src="/public/scripts/htmx/ws.js"></script>
+    <style>
+        td {
+            table-layout: fixed;
+
+            width: 1em;
+            height: 1em;
+            border: 1px solid black;
+        }
+
+        td:not(:empty) {
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+<main>
+</main>
+<aside>
+    <form action="/games" method="POST"
+          hx-boost="true"
+          hx-target="previous main"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+    >
+        <input type="submit" name="">
+    </form>
+</aside>
+</body>
+</html>

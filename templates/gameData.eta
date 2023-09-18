@@ -1,0 +1,3 @@
+<% it.changes.forEach((c) => { %>
+    <%~ include("./gameCell", { i: c, alive: it.game.state[c], game: it.game }) %>
+<% }) %>

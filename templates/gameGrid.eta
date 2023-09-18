@@ -1,0 +1,7 @@
+<table hx-ext="ws" ws-connect="ws://<%= it.location %>">
+    <% it.game.state.forEach((c, i) => { %>
+        <%~ (i % it.game.grid.w === 0) ? "<tr>" : "" %>
+        <%~ include("./gameCell", { i, alive: c, game: it.game }) %>
+        <%~ (i % it.game.grid.w === it.game.grid.w - 1) ? "</tr>" : "" %>
+    <% }) %>
+</table>

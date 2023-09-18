@@ -1,21 +1,21 @@
-export type ConwayGameState = Uint8Array;
-export type ConwayGameDelta = number[];
-export type ConwayGameHistory = ConwayGameDelta[];
+export type ConwayGridState = Uint8Array;
+export type ConwayGridDelta = number[];
+export type ConwayGridHistory = ConwayGridDelta[];
 
-export class ConwayGame {
-    private static stateTick(
-        state: ConwayGameState,
+export class ConwayGrid {
+    static tick(
+        state: ConwayGridState,
         w: number,
         h: number
-    ): [ConwayGameState, ConwayGameDelta] {
-        const changes: ConwayGameDelta = [];
-        const next: ConwayGameState = new Uint8Array(w * h).fill(0);
+    ): [ConwayGridState, ConwayGridDelta] {
+        const changes: ConwayGridDelta = [];
+        const next: ConwayGridState = new Uint8Array(w * h).fill(0);
 
         const l = w * h;
         for (let i = 0; i < l; i++) {
             const c = state[i];
-            const n = ConwayGame.neighborSum(i, state, w, h);
-            const v = ConwayGame.cellState(c, n);
+            const n = ConwayGrid.neighborSum(i, state, w, h);
+            const v = ConwayGrid.cellState(c, n);
 
             next[i] = v;
             if (c !== v) changes.push(i);
@@ -26,7 +26,7 @@ export class ConwayGame {
 
     private static neighborSum(
         i: number,
-        state: ConwayGameState,
+        state: ConwayGridState,
         w: number,
         h: number
     ): number {
@@ -52,8 +52,8 @@ export class ConwayGame {
     }
 
     static collapseHistory(
-        history: ConwayGameHistory
-    ): ConwayGameDelta {
+        history: ConwayGridHistory
+    ): ConwayGridDelta {
         const changes = history.flat();
 
         const changed: number[] = [];
@@ -70,9 +70,9 @@ export class ConwayGame {
     }
 
     static applyDelta(
-        state: ConwayGameState,
-        delta: ConwayGameDelta
-    ): ConwayGameState {
+        state: ConwayGridState,
+        delta: ConwayGridDelta
+    ): ConwayGridState {
         const next = new Uint8Array(state.length);
         for (const ci of delta) {
             next[ci] = +!state[ci];
@@ -80,10 +80,8 @@ export class ConwayGame {
         return next;
     }
 
-    public state: ConwayGameState;
-    public delta: ConwayGameDelta = [];
-    public history: ConwayGameHistory = [];
-    public initial: ConwayGameState;
+
+    public initial: ConwayGridState;
 
     public w: number;
     public h: number;
@@ -91,20 +89,11 @@ export class ConwayGame {
     constructor(
         w: number,
         h: number,
-        initial?: ConwayGameState
+        initial?: ConwayGridState
     ) {
         this.w = w;
         this.h = h;
 
         this.initial = initial ?? new Uint8Array(w * h).fill(0);
-        this.state = this.initial;
-    }
-
-    tick(): void {
-        const [next, change] = ConwayGame.stateTick(this.state, this.w, this.h);
-
-        this.state = next;
-        this.delta = change;
-        this.history.push(change);
     }
 }
