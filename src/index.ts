@@ -6,11 +6,11 @@ import { Elysia, ws } from "elysia";
 import { Eta } from "eta";
 
 import { ConwayGameManager } from "./game";
-import { ConwayGridDelta } from "./conway";
+import { ConwayGridDelta, ConwayGridState } from "./conway";
 
 const location = "localhost:3000";
 
-const eta = new Eta({ views: "templates", cache: true, cacheFilepaths: true });
+const eta = new Eta({ views: "templates", cache: true, cacheFilepaths: true, rmWhitespace: true });
 
 const app = new Elysia()
     .use(staticPlugin())
@@ -20,7 +20,7 @@ const app = new Elysia()
     .post("/games", async ({ store }) => {
         const game = store.gm.createGame();
         const gameLoc = join(location, "games", game.id);
-        return eta.render("gameGrid", { game, location: gameLoc });
+        return eta.render("gameTable", { game, location: gameLoc });
     })
     .ws("/games/:id", {
         open(ws) {

@@ -9,10 +9,15 @@ export class ConwayGame {
 
     public static defaultGridGame() {
         const grid = new ConwayGrid(
-            32, 32
+            16, 16
         );
 
-        grid.initial.set([1, 1, 1], 80);
+        const l = grid.w * grid.h;
+
+        // randomize initial grid state for funsies
+        for (let i = 0; i < l; i++) {
+            grid.initial.set([+(Math.random() > .5)], i);
+        }
 
         return new ConwayGame(grid);
     }
@@ -30,9 +35,10 @@ export class ConwayGame {
                 map(_ => {
                     const [state, changes] = ConwayGrid.tick(this.state, this.grid.w, this.grid.h);
                     this.state = state;
+                    this.history.push(changes);
+
                     return changes;
-                }),
-                tap((changes) => this.history.push(changes))
+                })
             );
         }
 

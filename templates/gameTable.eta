@@ -1,0 +1,3 @@
+<table hx-ext="ws" ws-connect="ws://<%= it.location %>">
+    <%~ include("./gameGrid", { game: it.game }) %>
+</table>

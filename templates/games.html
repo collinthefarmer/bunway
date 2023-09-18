@@ -6,31 +6,77 @@
     <script src="/public/scripts/htmx/htmx.js"></script>
     <script src="/public/scripts/htmx/ws.js"></script>
     <style>
+        main {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+
+
+            position: absolute;
+            inset: 0 0 0 0;
+        }
+
+        main:has(div:not(:empty)) aside {
+            display: none;
+        }
+
+        table {
+            border-radius: .5em;
+            box-shadow: 0 0 .2em #dddddd;
+
+            padding: 2em;
+        }
+
         td {
             table-layout: fixed;
 
             width: 1em;
             height: 1em;
-            border: 1px solid black;
+
+            position: relative;
         }
 
-        td:not(:empty) {
-            background-color: blue;
+        td div {
+            width: 1em;
+            height: 1em;
+
+            background-color: hsl(calc(359 * var(--x) / var(--y)), 50%, 80%);
+
+            animation: zoop-in .3s ease-in;
+            animation-delay: calc(var(--r) * .3s);
+
+            animation-fill-mode: forwards;
+
+            opacity: 0;
+            transform-origin: center;
         }
+
+        @keyframes zoop-in {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body>
 <main>
+    <aside>
+        <form action="/games" method="POST"
+              hx-boost="true"
+              hx-target="next div"
+              hx-swap="innerHTML"
+              hx-push-url="true"
+        >
+            <input type="submit" name="">
+        </form>
+    </aside>
+    <div></div>
 </main>
-<aside>
-    <form action="/games" method="POST"
-          hx-boost="true"
-          hx-target="previous main"
-          hx-swap="innerHTML"
-          hx-push-url="true"
-    >
-        <input type="submit" name="">
-    </form>
-</aside>
 </body>
 </html>
